@@ -50,8 +50,14 @@ Pour qui : un particulier qui veut savoir si le prix d'une annonce est cohérent
 prix-immo-cvl/
 ├── data/raw/          # fichiers DVF téléchargés (non versionnés)
 ├── data/processed/    # table nettoyée des ventes d'appartements (non versionnée)
-├── notebooks/         # exploration et modélisation
-├── src/               # scripts (téléchargement, préparation des données)
+├── notebooks/         # 01 exploration, 02 régression simple, 03 régression multiple
+├── src/
+│   ├── download_data.py   # téléchargement des fichiers DVF
+│   ├── prepare_data.py    # nettoyage → une ligne par vente d'appartement
+│   ├── modele.py          # construction des variables du modèle (partagée)
+│   └── train.py           # évaluation sur 2025 puis entraînement du modèle final
+├── models/            # modèle entraîné utilisé par l'application
+├── app.py             # application Streamlit
 ├── requirements.txt   # dépendances Python
 └── README.md
 ```
@@ -66,6 +72,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 python src/download_data.py   # télécharge les 30 fichiers DVF
 python src/prepare_data.py    # construit data/processed/apparts.parquet
+python -m src.train           # évalue le modèle et enregistre models/modele_prix.joblib
+streamlit run app.py          # lance l'application sur http://localhost:8501
 ```
 
 ## Résultats
@@ -93,6 +101,14 @@ Après nettoyage : **39 817 ventes d'appartements**. Apprentissage sur 2021-2024
 - **Limites** : DVF ne contient ni l'état du bien, ni l'étage, ni le DPE ; un modèle linéaire ne capte pas les effets de quartier.
 
 Détails : [01 — Exploration](notebooks/01_exploration.ipynb) · [02 — Régression simple](notebooks/02_regression_simple.ipynb) · [03 — Régression multiple](notebooks/03_regression_multiple.ipynb)
+
+## Application
+
+`streamlit run app.py` ouvre une application où l'on choisit la commune, la surface, le nombre de pièces et la présence
+d'une dépendance. Elle affiche :
+- le **prix estimé** et le prix au m², avec le modèle C réentraîné sur toutes les ventes 2021-2025 ;
+- une **fourchette à 80 %**, tirée des erreurs réelles mesurées sur 2025 (8 prix réels sur 10 étaient entre 0,65 et 1,39 fois l'estimation) ;
+- le prix médian observé dans la commune, ou un avertissement si la commune a moins de 10 ventes.
 
 ## Inspirations
 
