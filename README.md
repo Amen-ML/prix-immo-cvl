@@ -18,7 +18,7 @@ Pour qui : un particulier qui veut savoir si le prix d'une annonce est cohérent
 ## Périmètre
 
 - **Type de bien : appartements.** Le prix d'une maison dépend beaucoup de son terrain, ce qui brouille la relation entre surface et prix. Les appartements forment un marché plus homogène, idéal pour commencer par une régression simple.
-- **Zone : les 6 départements de la région** : Cher (18), Eure-et-Loir (28), Indre (36), Indre-et-Loire (37), Loir-et-Cher (41) et Loiret (45). Une seule ville ne donnerait que quelques milliers de ventes par an ; la région entière apporte plus de données et permet d'utiliser la localisation comme variable explicative.
+- **Zone : les 6 départements de la région** : Cher (18), Eure-et-Loir (28), Indre (36), Indre-et-Loire (37), Loir-et-Cher (41) et Loiret (45). Même Tours, la plus grande ville, compte moins de 2 000 ventes d'appartements par an ; la région entière apporte plus de données et permet d'utiliser la localisation comme variable explicative.
 - **Période : 2021 à 2025.** La hausse des taux d'intérêt en 2022-2023 a pu faire évoluer les prix : l'année de vente sera donc une variable du modèle.
 - **Uniquement les ventes classiques** (`nature_mutation = "Vente"`) : j'écarte les ventes sur plan (VEFA), les adjudications et les échanges, dont les prix suivent d'autres logiques.
 - **Variable à prédire : le prix de vente total en €.** Avec une régression simple `prix = a × surface + b`, le coefficient `a` se lit directement comme un prix au mètre carré, ce qui rend le modèle facile à interpréter.
@@ -27,7 +27,7 @@ Pour qui : un particulier qui veut savoir si le prix d'une annonce est cohérent
 
 1. Télécharger les données et les explorer (types de mutation, types de biens, distributions des prix et des surfaces)
 2. Nettoyer : une même vente peut apparaître sur plusieurs lignes (appartement + cave, parking…), il faut donc la reconstituer ; retirer les surfaces manquantes et les prix aberrants
-3. Baseline : prix médian au m² de la commune × surface, pour avoir un point de comparaison simple
+3. Baseline : prix médian au m² de la commune (calculé sur les seules données d'entraînement) × surface, pour avoir un point de comparaison simple
 4. Régression linéaire simple : prix en fonction de la surface
 5. Régression linéaire multiple : ajout du nombre de pièces, du département ou de la commune, de la position GPS et de l'année de vente
 6. Diagnostic : analyse des résidus, significativité des coefficients (p-values), multicolinéarité (VIF), puis régularisation Ridge et Lasso
