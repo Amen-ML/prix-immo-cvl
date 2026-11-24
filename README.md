@@ -77,13 +77,22 @@ Après nettoyage : **39 817 ventes d'appartements**. Apprentissage sur 2021-2024
 | Baseline : prix médian | 48 203 € | −0,03 |
 | Baseline : prix médian au m² de la commune × surface | 31 336 € | 0,58 |
 | Régression linéaire simple : prix ~ surface | 38 985 € | 0,42 |
+| A — Régression multiple sur le prix (surface, pièces, dépendance, année, département) | 34 967 € | 0,53 |
+| B — Régression multiple sur log(prix) | 34 102 € | 0,49 |
+| **C — log(prix) + une variable par commune** | **29 212 €** | **0,60** |
+| C + Ridge (alpha choisi par validation croisée temporelle) | 29 211 € | 0,60 |
+| C + Lasso (106 coefficients non nuls sur 117) | 29 237 € | 0,59 |
 
-- La surface seule explique environ 40 % des variations de prix : chaque m² ajoute en moyenne **1 855 €**.
-- La régression simple bat la baseline naïve, mais pas la baseline par commune : les résidus montrent un biais géographique
-  (prix surestimés de 44 % dans l'Indre, sous-estimés de 20 % en Indre-et-Loire). La localisation est la variable manquante.
-- Prochaine étape : régression linéaire multiple (localisation, pièces, année, dépendance), puis Ridge / Lasso.
+- **Régression simple** : la surface seule explique environ 40 % des variations de prix (chaque m² ajoute en moyenne 1 855 €),
+  mais le modèle est biaisé géographiquement (prix surestimés de 44 % dans l'Indre, sous-estimés de 20 % en Indre-et-Loire).
+- **Régression multiple** : surface et pièces sont corrélées (0,87, VIF ≈ 4) ; à surface égale, une pièce de plus fait baisser le prix.
+  Le passage au log rend les effets multiplicatifs (+10 % de surface → +8,6 % de prix ; Indre-et-Loire ≈ +90 % par rapport au Cher)
+  et supprime l'hétéroscédasticité.
+- **Meilleur modèle (C)** : il bat la baseline par commune de 2 100 € de MAE et ramène le biais par département à moins de ±8 %.
+- **Ridge / Lasso** : pas de gain, car avec 32 000 ventes pour 117 variables l'OLS ne sur-apprend pas.
+- **Limites** : DVF ne contient ni l'état du bien, ni l'étage, ni le DPE ; un modèle linéaire ne capte pas les effets de quartier.
 
-Détails : [01 — Exploration](notebooks/01_exploration.ipynb) · [02 — Régression simple](notebooks/02_regression_simple.ipynb)
+Détails : [01 — Exploration](notebooks/01_exploration.ipynb) · [02 — Régression simple](notebooks/02_regression_simple.ipynb) · [03 — Régression multiple](notebooks/03_regression_multiple.ipynb)
 
 ## Inspirations
 
