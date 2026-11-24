@@ -58,7 +58,8 @@ prix-immo-cvl/
 │   └── train.py           # évaluation sur 2025 puis entraînement du modèle final
 ├── models/            # modèle entraîné utilisé par l'application
 ├── app.py             # application Streamlit
-├── requirements.txt   # dépendances Python
+├── requirements.txt       # dépendances de l'application (utilisées par Streamlit Cloud)
+├── requirements-dev.txt   # environnement complet : notebooks, entraînement, application
 └── README.md
 ```
 
@@ -69,7 +70,7 @@ git clone https://github.com/Amen-ML/prix-immo-cvl.git
 cd prix-immo-cvl
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 python src/download_data.py   # télécharge les 30 fichiers DVF
 python src/prepare_data.py    # construit data/processed/apparts.parquet
 python -m src.train           # évalue le modèle et enregistre models/modele_prix.joblib
