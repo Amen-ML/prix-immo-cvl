@@ -58,7 +58,7 @@ prix-immo-cvl/
 ## Installation
 
 ```bash
-git clone <url-du-dépôt>
+git clone https://github.com/Amen-ML/prix-immo-cvl.git
 cd prix-immo-cvl
 python3 -m venv .venv
 source .venv/bin/activate
