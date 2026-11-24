@@ -49,6 +49,7 @@ Pour qui : un particulier qui veut savoir si le prix d'une annonce est cohérent
 ```
 prix-immo-cvl/
 ├── data/raw/          # fichiers DVF téléchargés (non versionnés)
+├── data/processed/    # table nettoyée des ventes d'appartements (non versionnée)
 ├── notebooks/         # exploration et modélisation
 ├── src/               # scripts (téléchargement, préparation des données)
 ├── requirements.txt   # dépendances Python
@@ -63,12 +64,26 @@ cd prix-immo-cvl
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python src/download_data.py
+python src/download_data.py   # télécharge les 30 fichiers DVF
+python src/prepare_data.py    # construit data/processed/apparts.parquet
 ```
 
 ## Résultats
 
-À venir.
+Après nettoyage : **39 817 ventes d'appartements**. Apprentissage sur 2021-2024 (32 235 ventes), test sur 2025 (7 582 ventes).
+
+| Modèle | MAE sur 2025 | R² sur 2025 |
+|---|---|---|
+| Baseline : prix médian | 48 203 € | −0,03 |
+| Baseline : prix médian au m² de la commune × surface | 31 336 € | 0,58 |
+| Régression linéaire simple : prix ~ surface | 38 985 € | 0,42 |
+
+- La surface seule explique environ 40 % des variations de prix : chaque m² ajoute en moyenne **1 855 €**.
+- La régression simple bat la baseline naïve, mais pas la baseline par commune : les résidus montrent un biais géographique
+  (prix surestimés de 44 % dans l'Indre, sous-estimés de 20 % en Indre-et-Loire). La localisation est la variable manquante.
+- Prochaine étape : régression linéaire multiple (localisation, pièces, année, dépendance), puis Ridge / Lasso.
+
+Détails : [01 — Exploration](notebooks/01_exploration.ipynb) · [02 — Régression simple](notebooks/02_regression_simple.ipynb)
 
 ## Inspirations
 
