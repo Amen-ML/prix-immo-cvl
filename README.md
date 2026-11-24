@@ -1,6 +1,10 @@
 # Estimer le prix d'un appartement en Centre-Val de Loire
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://prix-immo-cvl.streamlit.app/)
+
 Projet de régression linéaire sur les ventes immobilières réelles (données DVF) de la région Centre-Val de Loire, de 2021 à 2025.
+
+**Application en ligne : [prix-immo-cvl.streamlit.app](https://prix-immo-cvl.streamlit.app/)**
 
 ## Question
 
@@ -105,7 +109,8 @@ Détails : [01 — Exploration](notebooks/01_exploration.ipynb) · [02 — Régr
 
 ## Application
 
-`streamlit run app.py` ouvre une application où l'on choisit la commune, la surface, le nombre de pièces et la présence
+En ligne sur **https://prix-immo-cvl.streamlit.app/** (Streamlit Community Cloud), ou en local avec `streamlit run app.py`.
+On y choisit la commune, la surface, le nombre de pièces et la présence
 d'une dépendance. Elle affiche :
 - le **prix estimé** et le prix au m², avec le modèle C réentraîné sur toutes les ventes 2021-2025 ;
 - une **fourchette à 80 %**, tirée des erreurs réelles mesurées sur 2025 (8 prix réels sur 10 étaient entre 0,65 et 1,39 fois l'estimation) ;
